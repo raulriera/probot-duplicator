@@ -1,7 +1,7 @@
 {
   "name": "Duplicator",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create full copies of issues with a single command",
   "author": "Raul Riera <rieraraul@gmail.com>",
   "license": "ISC",
   "repository": "https://github.com/raulriera/probot-duplicator.git",

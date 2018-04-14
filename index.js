@@ -25,10 +25,10 @@ module.exports = robot => {
       delete issueCopy.milestone
     }
 
-    // Create a copry of the issue commented on
+    // Create a copy of the issue commented on
     context.github.issues.create(issueCopy)
 
-    // Delete the comment that triggered this with a link to the new issue
+    // Delete the comment that triggered the command
     return context.github.issues.deleteComment({
       'owner': repository.owner.login,
       'repo': repository.name,
