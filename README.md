@@ -2,6 +2,8 @@
 
 > a GitHub App built with [Probot](https://github.com/probot/probot) that creates a full copy of issues with a single command.
 
+![Screenshot 1](https://user-images.githubusercontent.com/24159/38773624-51f04930-401f-11e8-8caa-8265eb5fa1ac.png)
+
 ## Usage
 
 1. **[Configure the GitHub App](https://github.com/apps/duplicator)**
