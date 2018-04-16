@@ -1,5 +1,5 @@
 {
-  "name": "Duplicator",
+  "name": "duplicator",
   "version": "1.0.0",
   "description": "Create full copies of issues with a single command",
   "author": "Raul Riera <rieraraul@gmail.com>",
