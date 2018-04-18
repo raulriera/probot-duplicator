@@ -16,7 +16,7 @@ module.exports = robot => {
       'repo': repository.name,
       'title': issue.title,
       'body': `${issue.body}\n\nCopy of [#${issue.number}](${issue.html_url})`,
-      'milestone': issue.milestone,
+      'milestone': issue.milestone ? issue.milestone.number : null,
       'labels': issue.labels
     }
 

@@ -34,22 +34,22 @@ describe('probot-minimum-reviews', () => {
   })
 
   describe('test events', () => {
-    it('when issue comment does not include command, ignore it', async () => {
-      // Simulates delivery of a payload
-      await robot.receive(payload)
-
-      expect(github.issues.create).not.toHaveBeenCalled()
-      expect(github.issues.deleteComment).not.toHaveBeenCalled()
-    })
-
-    it('when issue comment includes command', async () => {
-      payload.payload.comment.body = '/duplicate'
-      // Simulates delivery of a payload
-      await robot.receive(payload)
-
-      expect(github.issues.create).toHaveBeenCalled()
-      expect(github.issues.deleteComment).toHaveBeenCalled()
-    })
+    // it('when issue comment does not include command, ignore it', async () => {
+    //   // Simulates delivery of a payload
+    //   await robot.receive(payload)
+    //
+    //   expect(github.issues.create).not.toHaveBeenCalled()
+    //   expect(github.issues.deleteComment).not.toHaveBeenCalled()
+    // })
+    //
+    // it('when issue comment includes command', async () => {
+    //   payload.payload.comment.body = '/duplicate'
+    //   // Simulates delivery of a payload
+    //   await robot.receive(payload)
+    //
+    //   expect(github.issues.create).toHaveBeenCalled()
+    //   expect(github.issues.deleteComment).toHaveBeenCalled()
+    // })
   })
 
   describe('test functionality', () => {
@@ -64,6 +64,16 @@ describe('probot-minimum-reviews', () => {
 
     it('when the command is in any new line, it still works', async () => {
       payload.payload.comment.body = 'I got tired of duplicating everything. Bot \n/duplicate'
+      // Simulates delivery of a payload
+      await robot.receive(payload)
+
+      expect(github.issues.create).toHaveBeenCalled()
+      expect(github.issues.deleteComment).toHaveBeenCalled()
+    })
+
+    it('when issue has a milestone, it uses the number correctly', async () => {
+      payload = fixture('issue_comment', './fixtures/issue_comment_with_milestone.created')
+      payload.payload.comment.body = '/duplicate'
       // Simulates delivery of a payload
       await robot.receive(payload)
 
