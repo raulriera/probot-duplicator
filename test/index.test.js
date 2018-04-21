@@ -34,22 +34,22 @@ describe('probot-minimum-reviews', () => {
   })
 
   describe('test events', () => {
-    // it('when issue comment does not include command, ignore it', async () => {
-    //   // Simulates delivery of a payload
-    //   await robot.receive(payload)
-    //
-    //   expect(github.issues.create).not.toHaveBeenCalled()
-    //   expect(github.issues.deleteComment).not.toHaveBeenCalled()
-    // })
-    //
-    // it('when issue comment includes command', async () => {
-    //   payload.payload.comment.body = '/duplicate'
-    //   // Simulates delivery of a payload
-    //   await robot.receive(payload)
-    //
-    //   expect(github.issues.create).toHaveBeenCalled()
-    //   expect(github.issues.deleteComment).toHaveBeenCalled()
-    // })
+    it('when issue comment does not include command, ignore it', async () => {
+      // Simulates delivery of a payload
+      await robot.receive(payload)
+
+      expect(github.issues.create).not.toHaveBeenCalled()
+      expect(github.issues.deleteComment).not.toHaveBeenCalled()
+    })
+
+    it('when issue comment includes command', async () => {
+      payload.payload.comment.body = '/duplicate'
+      // Simulates delivery of a payload
+      await robot.receive(payload)
+
+      expect(github.issues.create).toHaveBeenCalled()
+      expect(github.issues.deleteComment).toHaveBeenCalled()
+    })
   })
 
   describe('test functionality', () => {
