@@ -1,7 +1,7 @@
 // Requiring probot allows us to mock out a robot instance
-const {createRobot} = require('probot')
+const {Application} = require('probot')
 // Requiring our app
-const app = require('..')
+const plugin = require('..')
 
 function fixture (name, path) {
   return {
@@ -11,15 +11,15 @@ function fixture (name, path) {
 }
 
 describe('probot-minimum-reviews', () => {
-  let robot
+  let app
   let github
   let payload
 
   beforeEach(() => {
     // Here we create a robot instance
-    robot = createRobot()
+    app = new Application()
     // Here we initialize the app on the robot instance
-    app(robot)
+    app.load(plugin)
     // Reload the payload
     payload = fixture('issue_comment', './fixtures/issue_comment.created')
     // This is an easy way to mock out the GitHub API
@@ -30,13 +30,13 @@ describe('probot-minimum-reviews', () => {
       }
     }
     // Passes the mocked out GitHub API into out robot instance
-    robot.auth = () => Promise.resolve(github)
+    app.auth = () => Promise.resolve(github)
   })
 
   describe('test events', () => {
     it('when issue comment does not include command, ignore it', async () => {
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).not.toHaveBeenCalled()
       expect(github.issues.deleteComment).not.toHaveBeenCalled()
@@ -45,7 +45,7 @@ describe('probot-minimum-reviews', () => {
     it('when issue comment includes command', async () => {
       payload.payload.comment.body = '/duplicate'
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).toHaveBeenCalled()
       expect(github.issues.deleteComment).toHaveBeenCalled()
@@ -56,7 +56,7 @@ describe('probot-minimum-reviews', () => {
     it('when comment is from owner, duplicate it', async () => {
       payload.payload.comment.body = '/duplicate'
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).toHaveBeenCalled()
       expect(github.issues.deleteComment).toHaveBeenCalled()
@@ -65,7 +65,7 @@ describe('probot-minimum-reviews', () => {
     it('when the command is in any new line, it still works', async () => {
       payload.payload.comment.body = 'I got tired of duplicating everything. Bot \n/duplicate'
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).toHaveBeenCalled()
       expect(github.issues.deleteComment).toHaveBeenCalled()
@@ -75,7 +75,7 @@ describe('probot-minimum-reviews', () => {
       payload = fixture('issue_comment', './fixtures/issue_comment_with_milestone.created')
       payload.payload.comment.body = '/duplicate'
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).toHaveBeenCalled()
       expect(github.issues.deleteComment).toHaveBeenCalled()
@@ -85,7 +85,7 @@ describe('probot-minimum-reviews', () => {
       payload.payload.issue.user.login = 'paulriera'
       payload.payload.comment.body = '/duplicate'
       // Simulates delivery of a payload
-      await robot.receive(payload)
+      await app.receive(payload)
 
       expect(github.issues.create).not.toHaveBeenCalled()
       expect(github.issues.deleteComment).not.toHaveBeenCalled()
